@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Fidelicia</string>
+
+    <string-array name="Ville">
+        <item>Choisir</item>
+        <item>CITY 1</item>
+        <item>CITY 2</item>
+        <item>CITY 3</item>
+    </string-array>
+
+    <string-array name="Pays">
+        <item>Choisir</item>
+        <item>CITY 1</item>
+        <item>CITY 2</item>
+    </string-array>
+
+    <string-array name="Profession">
+        <item>Choisir</item>
+        <item>Agriculteur</item>
+        <item>Artisans, commercants</item>
+        <item>...</item>
+    </string-array>
+
+    <string-array name="Civilite">
+        <item>Choisir</item>
+        <item>M</item>
+        <item>Mme</item>
+        <item>Mlle</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

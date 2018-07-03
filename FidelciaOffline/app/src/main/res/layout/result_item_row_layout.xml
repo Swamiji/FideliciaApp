@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_weight="1"
+    android:layout_margin="@dimen/layout_10"
+    android:background="@color/grey_lighter"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_margin="3dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[MEMBERNAME]"
+            android:textSize="@dimen/text_24"
+            android:gravity="center"
+            android:textColor="@color/black"
+
+            android:maxLines="1"
+            android:id="@+id/result_memberName"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_margin="3dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[MEMBERLASTNAME]"
+            android:textSize="@dimen/text_24"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:id="@+id/result_memberLastName"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.9"
+        android:gravity="center"
+        android:layout_margin="3dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[MEMBERPHONE]"
+            android:textSize="@dimen/text_24"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:id="@+id/result_member_PhoneNumber"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        >
+        <Button
+            android:id="@+id/button_voir"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="voir"
+            android:textSize="@dimen/text_22"
+            android:background="@drawable/button_stroke_black_background"
+            android:layout_margin="@dimen/layout_20"
+            android:maxLines="1"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.9"
+        android:gravity="center"
+        >
+        <Button
+            android:id="@+id/button_crediter"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Créditer"
+            android:textSize="@dimen/text_22"
+            android:background="@color/light_green"
+            android:layout_margin="@dimen/layout_20"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            />
+    </LinearLayout>
+
+</LinearLayout>

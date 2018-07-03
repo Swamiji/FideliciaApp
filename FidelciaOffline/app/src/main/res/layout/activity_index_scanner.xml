@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".index.Index_scanner"
+android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="1"
+
+        >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:layout_weight="0.1"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    >
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        android:src="@drawable/logo"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            >
+             <android.support.v7.widget.CardView
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:layout_marginLeft="20dp"
+                      android:layout_marginRight="20dp"
+                      android:layout_marginTop="10dp"
+                      app:cardPreventCornerOverlap="true"
+                      app:cardCornerRadius="1dp"
+                      android:elevation="15dp"
+                      >
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:orientation="vertical"
+                     android:background="@color/scanner_background"
+                     >
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="0dp"
+                         android:orientation="vertical"
+                         android:gravity="center"
+                         android:layout_weight="1"
+                         >
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="0dp"
+                             android:layout_weight="1.1"
+                             >
+                             <ImageView
+                                 android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:visibility="visible"
+                                 android:src="@mipmap/home_scan"
+                                 />
+                         </LinearLayout>
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="0dp"
+                             android:orientation="horizontal"
+                             android:gravity="center"
+                             android:layout_weight="0.3"
+                             android:layout_marginLeft="5dp"
+                             android:layout_marginRight="5dp"
+                             android:layout_marginBottom="5dp"
+                             >
+
+                             <EditText
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="60dp"
+                                 android:layout_margin="10dp"
+                                 android:layout_weight="6"
+                                 android:enabled="true"
+                                 android:id="@+id/scanning_value_input"
+                                 android:singleLine="true"
+                                 android:inputType="number"
+                                 android:focusable="true"
+                                 android:focusableInTouchMode="true"
+                                 />
+                               <Button
+                                   android:layout_width="100dp"
+                                   android:layout_height="wrap_content"
+                                   android:text="GO!"
+                                   android:background="@color/darkBlue"
+                                   android:textColor="#ffffff"
+                                   android:layout_weight="0.3"
+                                   android:id="@+id/btn_Go"
+                                   />
+
+                         </LinearLayout>
+                     </LinearLayout>
+
+                 </LinearLayout>
+
+                  </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:orientation="horizontal"
+            android:layout_margin="22dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginRight="10dp"
+                >
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="1dp"
+                    android:elevation="15dp"
+                    app:cardPreventCornerOverlap="true"
+                    >
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/home_search"
+                        android:id="@+id/RechherCcher"
+                        android:background="@color/scanner_background"
+                        />
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:background="@color/scanner_background"
+                >
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="1dp"
+                    android:elevation="15dp"
+                    app:cardPreventCornerOverlap="true"
+                    >
+
+                    <ImageView
+                        android:id="@+id/carte_cadeau"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/home_giftcard"
+                        android:background="@color/scanner_background"
+                        />
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

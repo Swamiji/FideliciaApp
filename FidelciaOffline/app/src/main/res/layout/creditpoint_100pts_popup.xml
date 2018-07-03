@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Êtes-vous sur de créditer  "
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:gravity="center"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="[MemberName]"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    android:gravity="center"
+                    android:id="@+id/member_name"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="[MemberLastName] "
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    android:gravity="center"
+                    android:id="@+id/member_last_name"
+                    android:layout_marginLeft="10dp"
+                    />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[CREDITAMOUNT] points ? "
+            android:textColor="@color/light_green"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:id="@+id/credit_points_popup"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="Oui, je confirme"
+            android:background="@drawable/button_solid_background"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:id="@+id/oui_je_confirm"
+            android:layout_margin="10dp"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:textSize="30sp"
+            android:textColor="@color/Red"
+            android:text="Non !"
+            android:background="@drawable/red_stroke_background"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:id="@+id/non"
+            android:layout_margin="10dp"
+            />
+
+</LinearLayout>

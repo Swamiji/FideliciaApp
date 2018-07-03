@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.novo.fidelicia">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:largeHeap="true"
+        android:hardwareAccelerated="false"
+        >
+        <activity
+            android:name=".login.login"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".index.Index_scanner"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden"
+           />
+        <activity
+            android:name=".new_member.Nouveau_Membre"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="landscape"
+            />
+        <activity
+            android:name=".Créditer.Crediter"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".Membre.Membre"  android:screenOrientation="landscape"
+            android:resizeableActivity="true"
+            >
+        </activity>
+        <activity
+            android:name=".GiftCard.giftcard"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".GiftCard.Giftcard_debit"
+            android:windowSoftInputMode="stateHidden"  android:screenOrientation="landscape" />
+        <activity
+            android:name=".GiftCard.giftcardCreate"
+            android:windowSoftInputMode="stateHidden"  android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".GiftCard.giftcardUpdate"  android:screenOrientation="landscape"
+            />
+        <activity
+            android:name=".Voucher.SatisfactionVoucher"  android:screenOrientation="landscape"
+            />
+        <activity
+            android:name=".Search.search"
+            android:screenOrientation="landscape"
+            />
+        <activity android:name=".Search.Search_results"  android:screenOrientation="landscape"></activity>
+
+        <service
+            android:name=".BackgroundTaskService.SensorService"
+            android:enabled="true" >
+        </service>
+
+        <receiver
+            android:name=".BackgroundTaskService.SensorRestarterBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="com.novo.fidelicia.RestartSensor"/>
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>
