@@ -3,8 +3,10 @@ package com.novo.fidelicia.index;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
@@ -66,9 +69,11 @@ public class Index_scanner extends AppCompatActivity {
     String ViewOneMemberByMi_Barcode = "Member/ViewOneMemberByMiBarCode?MiBarCode=";
     String VoucherUtilisationUrl = "Voucher/VoucherUtilisation";
     String ViewOneGiftCardUrl = "GiftCard/ViewOneGiftCard?card_number=";
-    String getCardNumber, getName, getLastName, getdate_of_birth, getage, getphNumber, getzip_code,
+    String ViewAllZipCodeListInsertedInWeb = "SyncZipCode/ViewAllZipCodeListInsertedInWeb";
+    String  getCardNumber, getName, getLastName, getdate_of_birth, getage, getphNumber, getzip_code,
             getcity, getaddress, getemail, getMemberId, getRewardValue, getNo_of_points, getMiBarcode,
-            getPoints_gain, getDateLastVisit, getValueOfGiftCard, results,getVdBarcode,getCashier,StrDate,getVoucherStage;
+            getPoints_gain, getDateLastVisit, getValueOfGiftCard, results,getVdBarcode,getCashier,StrDate,getVoucherStage,
+            auto_id,geographical_code,department,city,postal_code,country,created_by,created_on;
 
     AlertDialog.Builder builder, builder1, builder2, builder3;
     AlertDialog alertDialog, alertDialog1, alertDialog2, alertDialog3;
@@ -79,6 +84,9 @@ public class Index_scanner extends AppCompatActivity {
     JSONArray jsonArray = new JSONArray();
     DatabaseHelper databaseHelper = null;
     AllVoucherModel allVoucherModel = new AllVoucherModel();
+    ArrayList<AllMemberModel>InsertZipArrayList = new ArrayList<AllMemberModel>();
+    ArrayList<AllMemberModel>ZipCodeArrayList = new ArrayList<AllMemberModel>();
+    ProgressDialog progressDialog = null;
 
     Intent mServiceIntent;
     private SensorService mSensorService;

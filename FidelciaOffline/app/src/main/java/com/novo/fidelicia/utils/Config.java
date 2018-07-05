@@ -9,5 +9,4 @@ public class Config {
     public static final String Url = "http://fidelicia.fr/api/";
     //public static final String CashierMode = "SingleCashier";
     public static final String CashierMode = "MultipleCashier";
-
 }

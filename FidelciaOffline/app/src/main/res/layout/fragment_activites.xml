@@ -52,7 +52,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text="[NAME] "
+                            android:text=" "
                             android:textColor="@color/light_green"
                             android:textSize="@dimen/text_24"
                             android:textStyle="bold"
@@ -62,7 +62,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text=" [SURNAME]"
+                            android:text=" "
                             android:textColor="@color/light_green"
                             android:textSize="@dimen/text_24"
                             android:textStyle="bold"
@@ -97,7 +97,7 @@
                                 android:id="@+id/Chiffre_d_Affaires"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="[MEMBERTOTALPOINT] €"
+                                android:text=""
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_22" />
                         </LinearLayout>
@@ -130,7 +130,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_22"
-                                android:text=" [MEMBERAVERAGEPOINT] €"
+                                android:text=""
                                 android:id="@+id/Panier_Moyen"
                                 />
                         </LinearLayout>
@@ -163,7 +163,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_22"
-                                android:text="[MEMBERNUMBEROFVISIT]"
+                                android:text=""
                                 android:id="@+id/Nombre_de_visite"
                                 />
                         </LinearLayout>
@@ -196,7 +196,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_22"
-                                android:text="[CREATIONDATE]"
+                                android:text=""
                                 android:maxLines="1"
                                 android:id="@+id/Crée_le"
                                 />
@@ -311,7 +311,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text="[POINTNUMBER] pts"
+                            android:text=""
                             android:textColor="@color/light_green"
                             android:textSize="@dimen/text_24"
                             android:textStyle="bold"
@@ -347,7 +347,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_22"
-                                android:text="[NUMBERVOUCHERSEND] €"
+                                android:text=""
                                 android:maxLines="1"
                                 android:id="@+id/Bons_d_achat_envoyés"
                                 />
@@ -381,7 +381,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_22"
-                                android:text=" [AMOUNTVOUCHERUSE] €"
+                                android:text=""
                                 android:maxLines="1"
                                 android:id="@+id/Montant_Utilisés"
                                 />
@@ -416,7 +416,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:maxLines="1"
-                                android:text="[PENDINGVOUCHER]"
+                                android:text=""
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_22"
                                 android:id="@+id/En_Cours"

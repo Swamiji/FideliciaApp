@@ -25,6 +25,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.novo.fidelicia.R;
+import com.novo.fidelicia.database.AllMemberModelByMiBarCodeOnly;
+import com.novo.fidelicia.database.DatabaseHelper;
+import com.novo.fidelicia.index.AllVoucherModel;
+import com.novo.fidelicia.new_member.CurrentTimeGet;
 import com.novo.fidelicia.utils.Config;
 import com.novo.fidelicia.utils.InternetUtil;
 import com.novo.fidelicia.utils.SharedPreference;
@@ -49,13 +53,15 @@ public class ActivityVoucherAdapter extends BaseAdapter {
     String getCardnumber,getLoginToken,getGetMiBarcode;
     String ViewOneMemberByMi_Barcode = "Member/ViewOneMemberByMiBarCode?MiBarCode=";
     String ActivitiesUrl = "Member/ViewOneMemberActivitiesByCardNumber?CardNumber=";
-    String getVdBarcode;
+    String getVdBarcode,getVoucherStage,StrDate,getCashier;
     String VoucherUtilisationUrl = "Voucher/VoucherUtilisation";
     AlertDialog.Builder builder3;
     View view3;
     Button Btn_OK_congratulation;
     AlertDialog alertDialog3;
     boolean your_date_is_outdated=true;
+    DatabaseHelper databaseHelper = null;
+    AllVoucherModel allVoucherModel = new AllVoucherModel();
 
     @SuppressLint("LongLogTag")
     public ActivityVoucherAdapter(Context var, ArrayList<ActivityVoucherModel> items ) {
@@ -66,15 +72,28 @@ public class ActivityVoucherAdapter extends BaseAdapter {
         getLoginToken = sharedPreference.getLoginToken(var);
         getCardnumber = sharedPreference.getCardNumber(var);
         getGetMiBarcode = sharedPreference.getMiBarcodeNumber(var);
+        getCashier = sharedPreference.getUserName(var);
+
 
         Log.e("GetLoginTokenInAdapter",""+getLoginToken);
         Log.e("GetCardNumberInAdapter :",""+getCardnumber);
         Log.e("GetMiBarcodeInAdapter",""+getGetMiBarcode);
 
-        if(getGetMiBarcode!=null)
+        if(Config.CashierMode == "MultipleCashier")
         {
-            ViewOneMemberByMiBarcode();
+            if(getGetMiBarcode!=null)
+            {
+                ViewOneMemberByMiBarcode();
+            }
         }
+        else
+        {
+            if(getGetMiBarcode!=null)
+            {
+                ViewOneMemberByMi_BarcodeFromSqliteDatabase();
+            }
+        }
+
         builder3 = new AlertDialog.Builder(var);
         LayoutInflater layoutInflater = (LayoutInflater)var.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view3 = layoutInflater.inflate(R.layout.congratulation_voucher_popup, null);
@@ -142,7 +161,14 @@ public class ActivityVoucherAdapter extends BaseAdapter {
 
                                 getVdBarcode = pojo.getVd_barcode();
                                 Log.e("GetVD_Barcode :",""+getVdBarcode);
-                                VoucherUtilisation();
+                                if(Config.CashierMode == "MultipleCashier")
+                                {
+                                    VoucherUtilisation();
+                                }
+                                else
+                                {
+                                    VoucherUtilistationFromSqliteDatabase();
+                                }
                                 finalHolder.etat.setVisibility(View.VISIBLE);
                                 finalHolder.depenser.setVisibility(View.GONE);
                                 finalHolder.etat.setText("UTILISÉ");
@@ -299,6 +325,50 @@ public class ActivityVoucherAdapter extends BaseAdapter {
         } else {
             Toast.makeText(var, "Please check Internet Connection", Toast.LENGTH_LONG).show();
         }
+
+    }
+
+
+    public void VoucherUtilistationFromSqliteDatabase()
+    {
+
+        databaseHelper = new DatabaseHelper(var);
+
+            allVoucherModel = new AllVoucherModel();
+            allVoucherModel = databaseHelper.getAllVoucherInformation(getVdBarcode);
+            getVdBarcode = allVoucherModel.getVd_barcode();
+            getVoucherStage = allVoucherModel.getVoucher_stage();
+
+            Log.e("GetVdBarcode ",""+getVdBarcode);
+
+            if(getVoucherStage.equals("ENVOYÉ"))
+            {
+                allVoucherModel = new AllVoucherModel();
+                alertDialog3.show();
+                StrDate = new CurrentTimeGet().getCurrentTime();
+                allVoucherModel.setVd_barcode(getVdBarcode);
+                allVoucherModel.setVoucher_stage("UTILISÉ");
+                allVoucherModel.setUpdated_by(getCashier);
+                allVoucherModel.setUpdated_on(StrDate);
+                allVoucherModel.setUp_window(false);
+                allVoucherModel.setUpdate_status("Checked");
+
+                databaseHelper.UpdateAllVoucherInformation(allVoucherModel);
+
+                Btn_OK_congratulation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog3.dismiss();
+                    }
+                });
+            }
+        }
+
+    public void ViewOneMemberByMi_BarcodeFromSqliteDatabase() {
+        databaseHelper = new DatabaseHelper(var);
+        AllMemberModelByMiBarCodeOnly allMemberModel = new AllMemberModelByMiBarCodeOnly();
+        allMemberModel = databaseHelper.GetInformationByBarcode(getGetMiBarcode);
+        getCardnumber =allMemberModel.getCard_number();
 
     }
 

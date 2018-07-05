@@ -99,8 +99,8 @@ public class giftcardUpdate extends AppCompatActivity {
         buttonOKUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isTest())
-                {
+               /* if(isTest())
+                {*/
                     if(Config.CashierMode=="MultipleCashier")
                     {
                         CreditGiftCard();
@@ -112,7 +112,7 @@ public class giftcardUpdate extends AppCompatActivity {
                         finish();
                     }
 
-                }
+                //}
             }
         });
 
@@ -146,6 +146,7 @@ public class giftcardUpdate extends AppCompatActivity {
             String ValueAmount = Float.toString(amount1);
 
             NewCardAmountValue.setText(ValueAmount);
+
 
         }
 
@@ -200,6 +201,15 @@ public class giftcardUpdate extends AppCompatActivity {
             getNom = Nom.getText().toString();
             getPrenom = PreNom.getText().toString();
 
+            if(getCreditAmount.length()<=0)
+            {
+                getCreditAmount = "0";
+            }
+            else
+            {
+                getCreditAmount = CreditAmount.getText().toString();
+            }
+
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.Url.concat(CreditGiftCardUrl), new Response.Listener<String>() {
                 @SuppressLint("LongLogTag")
                 @Override
@@ -211,7 +221,7 @@ public class giftcardUpdate extends AppCompatActivity {
                         Log.e("JsonResponse_giftCardUpdate :",""+JsonResponse);
 
                         if(JsonResponse.equals("Enter gift card Id!")
-                                || JsonResponse.equals("Amount should be greater than zero!")||JsonResponse.equals("Enter Valid Mandatory Fields"))
+                                /*|| JsonResponse.equals("Amount should be greater than zero!")*/||JsonResponse.equals("Enter Valid Mandatory Fields"))
                         {
                             //Toast.makeText(giftcardUpdate.this,JsonResponse,Toast.LENGTH_SHORT).show();
                         }

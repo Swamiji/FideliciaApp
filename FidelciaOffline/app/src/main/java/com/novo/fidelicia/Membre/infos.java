@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,7 +80,7 @@ public class infos extends Fragment{
     String ActivityListUrl = "DropDown/ActivityList";
     String ViewOneMemberByCardNumber = "Member/ViewOneMemberByCardNumber?CardNumber=";
     String ViewOneMemberByMi_Barcode = "Member/ViewOneMemberByMiBarCode?MiBarCode=";
-    String UpdateMemberUrl = "Member/UpdateMemberModel";
+    String UpdateMemberUrl = "Member/UpdateMember";
     ArrayList<String> CivilityList = new ArrayList<String>();
     ArrayList<String> CountryList = new ArrayList<String>();
     ArrayList<String> CityList = new ArrayList<String>();
@@ -151,6 +152,10 @@ public class infos extends Fragment{
         Email = (EditText)view.findViewById(R.id.Email_membre);
         Soicite = (EditText)view.findViewById(R.id.societe_membre);
         linear_dateofBirth = (LinearLayout)view.findViewById(R.id.linear_dateofBirth);
+
+        Carte.setInputType(InputType.TYPE_CLASS_PHONE);
+        PostalCode.setInputType(InputType.TYPE_CLASS_PHONE);
+        TelePhone.setInputType(InputType.TYPE_CLASS_PHONE);
 
         // Fixed the screen Orientation......
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -437,8 +442,6 @@ public class infos extends Fragment{
             PostalCode.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-
 
                 }
                 @Override
@@ -1147,6 +1150,7 @@ public class infos extends Fragment{
         dialog.setMessage("Please Wait...");
         dialog.setCancelable(true);
         dialog.show();
+
         StringRequest stringRequest = new StringRequest(Request.Method.PUT, Config.Url.concat(UpdateMemberUrl), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -1191,6 +1195,8 @@ public class infos extends Fragment{
             @SuppressLint("LongLogTag")
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+
+                Log.e("GetMemberIdInParams",""+getMiBarcode);
                 HashMap<String,String> params = new HashMap<String, String>();
                 params.put("member_id",getMemberId);
                 params.put("card_number",getCarte);
@@ -1228,8 +1234,9 @@ public class infos extends Fragment{
                 return headers;
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(stringRequest);
+        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(300000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
     }
     else
     {

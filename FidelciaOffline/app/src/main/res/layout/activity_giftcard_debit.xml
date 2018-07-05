@@ -409,7 +409,7 @@
                         android:layout_height="match_parent"
                         android:textColor="@color/light_green"
                         android:textSize="@dimen/text_25"
-                        android:text="[CARDAMOUNT] €"
+                        android:text=""
                         android:textStyle="bold"
                         android:id="@+id/credit_amount_debit"
                         android:maxLines="1"
@@ -470,7 +470,7 @@
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
                     android:textSize="@dimen/text_25"
-                    android:text="[Name]"
+                    android:text=""
                     android:id="@+id/Prenom_giftDebit"
                     android:maxLines="1"
                     />
@@ -480,7 +480,7 @@
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
                     android:textSize="@dimen/text_25"
-                    android:text="[LastName]"
+                    android:text=""
                     android:id="@+id/nom_giftDebit"
                     android:maxLines="1"
                     android:layout_marginLeft="10dp"
@@ -548,7 +548,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         android:textSize="20sp"
-                        android:text=": [PHONE NUMBER]"
+                        android:text=""
                         android:id="@+id/phone_number_giftDebit"
                         android:maxLines="1"
                         />
@@ -585,7 +585,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_24"
-                        android:text=": [ADDRESS]"
+                        android:text=""
                         android:id="@+id/address_giftDebit"
                         android:maxLines="1"
                         />
@@ -612,21 +612,21 @@
                     android:orientation="horizontal"
                    android:layout_weight="1"
                     >
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_24"
-                        android:text="[ZIP CODE]"
                         android:id="@+id/zipCode_giftDebit"
+                        android:layout_width="12dp"
+                        android:layout_height="wrap_content"
                         android:maxLines="1"
-                        />
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_24" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_24"
-                        android:text="[CITY]"
+                        android:text=""
                         android:layout_marginLeft="10dp"
                         android:id="@+id/city_giftDebit"
                         android:maxLines="1"
@@ -663,7 +663,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_24"
-                        android:text=": [EMAIL]"
+                        android:text=""
                         android:id="@+id/email_giftDebit"
                         android:maxLines="1"
                         />

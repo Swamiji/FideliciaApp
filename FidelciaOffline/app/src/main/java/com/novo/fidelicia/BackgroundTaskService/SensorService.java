@@ -112,13 +112,15 @@ public class SensorService extends Service {
     ArrayList<GiftCardDetailsModel>GiftCardArraylist = null;
     ArrayList<DeleteMemberModel>deleteMemberModelArrayList = null;
     AllVoucherModel allMemberModel = null;
+    ArrayList<AllMemberModel>InsertZipArrayList = new ArrayList<AllMemberModel>();
+    ArrayList<AllMemberModel>ZipCodeArrayList = new ArrayList<AllMemberModel>();
 
     String[] StringArray = null;
     int age;
     String cashier_id, card_number, civility, gender, name, first_name, society, activity, address_line1, address_line2, postal_code,
             city, country, phone, email, mi_barcode, created_by, created_on, birth_date, no_of_points, reward_id, reward_type, member_id
             , updated_by, updated_on, comment, gift_product_name, reason,gift_card_id,address,total_amount,amount,credit_debit,getVoucherId,
-            getVdBarcode,getVoucherStage,StrDate;
+            getVdBarcode,getVoucherStage,StrDate,auto_id,geographical_code,department;
 
     @SuppressLint("LongLogTag")
 
@@ -134,15 +136,10 @@ public class SensorService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+
         startTimer();
-      /*  new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                viewAllMemberList();
-                ViewAllMemberListUpdatedInWebNotInApp();
-                GetInformationAsArrayListFromSqliteDatabase();
-            }
-        },1000);*/
+       /* Thread thread = new Thread(new MyThreadClass(startId));
+        thread.start();*/
 
         return START_STICKY;
     }
@@ -168,7 +165,7 @@ public class SensorService extends Service {
         initializeTimerTask();
 
         //schedule the timer, to wake up every 1 second
-        timer.schedule(timerTask, 10000, 10000); //
+        timer.schedule(timerTask, 8000, 8000); //
     }
 
     /**
@@ -182,29 +179,32 @@ public class SensorService extends Service {
                 if (InternetUtil.isConnected(getApplicationContext())) {
                     //Log.i("in timer", "in timer ++++  "+ (counter++));
 
-                    viewAllMemberList();
-                    ViewAllMemberListUpdatedInWebNotInApp();
-                    GetInformationAsArrayListFromSqliteDatabase();
-                    GetInformationAsArrayListFromSqliteDatabaseForSendToServerCheckUpWindow();
-                    GetInformationFromPointsRewardTable();
-                    ViewAllGiftProductList();
-                    ViewAllReasonMaster();
-                    UpdateViewAllGiftProductList();
-                    UpdateViewAllReasonMasterList();
-                    ViewAllZipCode();
-                    GetSatisfactionVoucherListFromSqalite();
-                    ViewCivilityList();
-                    ViewActivityList();
-                    GetGiftCardDetailsListFromSqliteDatabase();
-                    GetGiftCardListFromSqliteDatabase();
-                    GiftCardListDetailsForUpdateFromAppToServer();
-                    DeleteAllMemberFromLogTableAppToServer();
-                    viewAllVoucherListFromServerToAppDatabase();
-                    viewAllVoucherListForUpdateVoucherStageFromAppDatabase();
-                    UpdateVoucherStage();
+                    if(!(Config.CashierMode=="MultipleCashier"))
+                    {
+                        ViewAllZipCode();
+                        viewAllMemberList();
+                        viewAllVoucherListFromServerToAppDatabase();
+                        ViewAllMemberListUpdatedInWebNotInApp();
+                        GetInformationAsArrayListFromSqliteDatabase();
+                        GetInformationAsArrayListFromSqliteDatabaseForSendToServerCheckUpWindow();
+                        GetInformationFromPointsRewardTable();
+                        ViewAllGiftProductList();
+                        ViewAllReasonMaster();
+                        UpdateViewAllGiftProductList();
+                        UpdateViewAllReasonMasterList();
+                        GetSatisfactionVoucherListFromSqalite();
+                        ViewCivilityList();
+                        ViewActivityList();
+                        GetGiftCardDetailsListFromSqliteDatabase();
+                        GetGiftCardListFromSqliteDatabase();
+                        GiftCardListDetailsForUpdateFromAppToServer();
+                        DeleteAllMemberFromLogTableAppToServer();
+                        viewAllVoucherListForUpdateVoucherStageFromAppDatabase();
+                        UpdateVoucherStage();
 
-                  /*  databaseHelper = new DatabaseHelper(getApplicationContext());
-                    databaseHelper.DeleteZipCodeTable();*/
+                    /*  databaseHelper = new DatabaseHelper(getApplicationContext());
+                      databaseHelper.DeleteZipCodeTable();*/
+                    }
                 }
             }
         };
@@ -234,6 +234,35 @@ public class SensorService extends Service {
         sharedPreference = new SharedPreference();
         getLoginToken = sharedPreference.getLoginToken(getApplicationContext());
         Log.e("GetLoginToken_FromLoginPage", "" + getLoginToken);
+    }
+
+    public class MyThreadClass implements Runnable{
+
+        int service_id;
+
+        public MyThreadClass(int service_id) {
+            this.service_id = service_id;
+        }
+
+        @Override
+        public void run() {
+            synchronized (this)
+            {
+                try
+                {
+                    //startTimer();
+                    wait(60000);
+                    //initializeTimerTask();
+
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+
+                stopSelf(service_id);
+            }
+        }
     }
 
     private void viewAllMemberList() {
@@ -313,11 +342,13 @@ public class SensorService extends Service {
 
                                         if (jsonObject.getBoolean("cr_server") == false) {
                                             databaseHelper = new DatabaseHelper(getApplicationContext());
-                                            databaseHelper.insertMessage(allMemberModel);
-                                            new BackgroundTask(updateMembersList, getApplicationContext()).execute();
+                                            boolean check = databaseHelper.insertMessage(allMemberModel);
 
+                                            if(check == true)
+                                            {
+                                                new BackgroundTask(updateMembersList, getApplicationContext()).execute();
+                                            }
                                         }
-
                                     }
                                 }
 
@@ -365,6 +396,7 @@ public class SensorService extends Service {
         public BackgroundTask(ArrayList<UpdateMemberModel> arrayList, Context context) {
             this.arrayListData = arrayList;
             this.ctx = context;
+
         }
 
         @Override
@@ -2053,11 +2085,13 @@ public class SensorService extends Service {
                     try {
                         JSONObject JO = new JSONObject(response);
                         JSONArray JA = JO.getJSONArray("results");
+                        AllMemberModel allMemberModel = null;
 
+                        //InsertZipArrayList.clear();
                         for (int i = 0; i < JA.length(); i++) {
                             JSONObject jsonObject = JA.getJSONObject(i);
 
-                            AllMemberModel allMemberModel = new AllMemberModel();
+                            allMemberModel = new AllMemberModel();
                             allMemberModel.setAuto_id(Integer.parseInt(jsonObject.getString("auto_id")));
                             allMemberModel.setCity(jsonObject.getString("city"));
                             allMemberModel.setZip_code(Integer.parseInt(jsonObject.getString("postal_code")));
@@ -2066,10 +2100,13 @@ public class SensorService extends Service {
                             allMemberModel.setCountry(jsonObject.getString("country"));
                             allMemberModel.setCreated_by(jsonObject.getString("created_by"));
                             allMemberModel.setCreated_on(jsonObject.getString("created_on"));
-
-                            databaseHelper.insertZipCodeInformation(allMemberModel);
+                            InsertZipArrayList = new ArrayList<AllMemberModel>();
+                            InsertZipArrayList.add(allMemberModel);
+                            new BackGroundTaskForInsertZipCode(InsertZipArrayList,getApplicationContext()).execute();
                         }
-                    } catch (JSONException e) {
+
+                    }
+                    catch (JSONException e) {
                         e.printStackTrace();
                     }
 
@@ -2105,6 +2142,57 @@ public class SensorService extends Service {
             stringRequest.setRetryPolicy(new DefaultRetryPolicy(300000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         }
 
+    }
+
+    public class BackGroundTaskForInsertZipCode extends AsyncTask<Void,Void,ArrayList<AllMemberModel>>{
+
+        ArrayList<AllMemberModel>arrayList = new ArrayList<AllMemberModel>();
+        Context context;
+        DatabaseHelper databaseHelper = null;
+
+        public BackGroundTaskForInsertZipCode(ArrayList<AllMemberModel> arrayList, Context context) {
+            this.arrayList = arrayList;
+            this.context = context;
+            databaseHelper = new DatabaseHelper(context);
+        }
+
+        @Override
+        protected ArrayList<AllMemberModel> doInBackground(Void... voids) {
+            for(int i = 0;i<arrayList.size();i++)
+            {
+                AllMemberModel allMemberModel = arrayList.get(i);
+                auto_id = String.valueOf(allMemberModel.getAuto_id());
+                city = allMemberModel.getCity();
+                postal_code = allMemberModel.getPostal_code();
+                department = allMemberModel.getDepartment();
+                geographical_code = String.valueOf(allMemberModel.getGeographical_code());
+                country = allMemberModel.getCountry();
+                created_by = allMemberModel.getCreated_by();
+                created_on = allMemberModel.getCreated_on();
+
+                AllMemberModel zipCodeModel = new AllMemberModel();
+                zipCodeModel.setAuto_id(Integer.parseInt(auto_id));
+                zipCodeModel.setCity(city);
+                zipCodeModel.setPostal_code(postal_code);
+                zipCodeModel.setDepartment(department);
+                zipCodeModel.setGeographical_code(Integer.parseInt(geographical_code));
+                zipCodeModel.setCountry(country);
+                zipCodeModel.setCreated_by(created_by);
+                zipCodeModel.setCreated_on(created_on);
+
+                ZipCodeArrayList = new ArrayList<AllMemberModel>();
+                ZipCodeArrayList.add(zipCodeModel);
+
+                return ZipCodeArrayList;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<AllMemberModel> allMemberModels) {
+
+            databaseHelper.insertZipCodeInformation(allMemberModels);
+        }
     }
 
     public void ViewCivilityList() {
@@ -2240,8 +2328,7 @@ public class SensorService extends Service {
         }
     }
 
-    public void GetSatisfactionVoucherListFromSqalite()
-    {
+    public void GetSatisfactionVoucherListFromSqalite() {
         SatisfactionArrayList = new ArrayList<AllMemberModel>();
         AllMemberModel allMemberModel = new AllMemberModel();
         databaseHelper = new DatabaseHelper(getApplicationContext());
@@ -2280,6 +2367,7 @@ public class SensorService extends Service {
 
         }
     }
+
     public class BackGroundTaskForSendVoucherListAppToServer extends AsyncTask<Void,Void,JSONObject>{
 
         ArrayList<SatisfactionVoucherModel> arrayList = new ArrayList<SatisfactionVoucherModel>();
@@ -2407,8 +2495,7 @@ public class SensorService extends Service {
         }
     }
 
-    public void GetGiftCardDetailsListFromSqliteDatabase()
-    {
+    public void GetGiftCardDetailsListFromSqliteDatabase() {
         GiftCardDetailsArrayList = new ArrayList<AllMemberModel>();
         databaseHelper = new DatabaseHelper(getApplicationContext());
         GiftCardDetailsArrayList = databaseHelper.GetGiftCardDetailsInformationFromSqlite("NotSync");
@@ -2456,6 +2543,7 @@ public class SensorService extends Service {
             new BackGroundTaskForSendGiftCardDetailsListAppToServer(GiftCardArraylist,getApplicationContext()).execute();
         }
     }
+
     public class BackGroundTaskForSendGiftCardDetailsListAppToServer extends AsyncTask<Void,Void,JSONObject>{
 
         ArrayList<GiftCardDetailsModel> arrayList = new ArrayList<GiftCardDetailsModel>();
@@ -2929,8 +3017,7 @@ public class SensorService extends Service {
         }
     }
 
-    public void DeleteAllMemberFromLogTableAppToServer()
-    {
+    public void DeleteAllMemberFromLogTableAppToServer() {
         LogTableMemberDeleteArrayList = new ArrayList<AllMemberModel>();
         databaseHelper = new DatabaseHelper(getApplicationContext());
         LogTableMemberDeleteArrayList = databaseHelper.GetInformationReturnArraylistFromLogTable("NotSync");
@@ -2988,6 +3075,7 @@ public class SensorService extends Service {
 
         }
     }
+
     public class BackgroundTaskPostDeleteMemberFromLogTableSQliteToServer extends AsyncTask<Void, Void, JSONObject> {
 
         ArrayList<DeleteMemberModel> arrayList = new ArrayList<DeleteMemberModel>();
@@ -3145,6 +3233,7 @@ public class SensorService extends Service {
                                         allMemberModel.setVd_barcode(jsonObject.getString("vd_barcode"));
                                         allMemberModel.setVoucher_exp_date(jsonObject.getString("voucher_exp_date"));
                                         allMemberModel.setVoucher_stage(jsonObject.getString("voucher_stage"));
+                                        allMemberModel.setMontent(Double.valueOf(jsonObject.getString("voucher_amount")));
                                         allMemberModel.setTemplate_id("");
                                         allMemberModel.setCreated_by(jsonObject.getString("created_by"));
                                         allMemberModel.setCreated_on(jsonObject.getString("created_on"));
@@ -3465,8 +3554,7 @@ public class SensorService extends Service {
         }
     }
 
-    public void UpdateVoucherStage()
-    {
+    public void UpdateVoucherStage() {
         databaseHelper = new DatabaseHelper(getApplicationContext());
         allVoucherModelArrayList = new ArrayList<AllVoucherModel>();
         allVoucherModelArrayList = databaseHelper.GetInVoucherDateReturnArraylistGiftVoucherDetailsTable("Invalid");
@@ -3485,6 +3573,8 @@ public class SensorService extends Service {
 
         }
     }
+
+
 
 
 

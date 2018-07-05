@@ -109,6 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static String col_voucher_stage = "voucher_stage";
     public static String col_template_id = "template_id";
     public static String col_voucher_status = "voucher_status";
+    public static String col_montent = "montent";
 
 
     String[]StringArray = null;
@@ -348,6 +349,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + col_vd_barcode + " TEXT,"
             + col_voucher_exp_date + " TEXT,"
             + col_voucher_stage + " TEXT,"
+            + col_montent + " REAL,"
             + col_template_id + " TEXT,"
             + col_created_by + " TEXT,"
             + col_created_on + " TEXT,"
@@ -401,7 +403,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertMessage(AllMemberModel allMemberModel) {
+    public boolean insertMessage(AllMemberModel allMemberModel) {
 
          SQLiteDatabase database = this.getWritableDatabase();
 
@@ -452,6 +454,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         database.insert(table_LCDC_member_info, null, values);
         database.close();
+
+        return true;
 
     }
 
@@ -1290,7 +1294,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         AllMemberModel allMemberModel = null;
-        Cursor cursor= db.rawQuery("SELECT COUNT (*) FROM LCDC_MemberRewardInfo  where trim(card_number) = ?" ,
+        Cursor cursor= db.rawQuery("SELECT COUNT (*) as reward_id FROM LCDC_MemberRewardInfo  where trim(card_number) = ?" ,
                 new String[] {cardNumber});
         try{
             if(cursor!=null && cursor.getCount()>0){
@@ -1300,7 +1304,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     do{
 
                        allMemberModel = new AllMemberModel();
-                       allMemberModel.setTotal_count(cursor.getCount());
+                       allMemberModel.setTotal_count(cursor.getInt(cursor.getColumnIndex("reward_id")));
                     }while (cursor.moveToNext());
                 }
             }
@@ -1519,7 +1523,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         {
             e.printStackTrace();
         }
-
 
     }
 
@@ -1834,47 +1837,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return allMemberModelArrayList;
     }
 
-    public void insertZipCodeInformation(AllMemberModel allMemberModel) {
+    public void insertZipCodeInformation(ArrayList<AllMemberModel> ArrayListallMemberModel) {
         try{
             boolean check;
             SQLiteDatabase database = this.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(col_auto_id,allMemberModel.getAuto_id());
-            contentValues.put(col_city,allMemberModel.getCity());
-            contentValues.put(col_postal_code,allMemberModel.getZip_code());
-            contentValues.put(col_department,allMemberModel.getDepartment());
-            contentValues.put(col_geographical_code,allMemberModel.getGeographical_code());
-            contentValues.put(col_country,allMemberModel.getCountry());
-            contentValues.put(col_created_by,allMemberModel.getCreated_by());
-            contentValues.put(col_created_on,allMemberModel.getCreated_on());
 
-            database.insert(table_LCDC_ZipCode,null,contentValues);
-            database.close();
-
-            /*check = CheckIsInDBorNot(String.valueOf(allMemberModel.getAuto_id()));
-
-            if(check == true)
+            for(int i=0;i<ArrayListallMemberModel.size();i++)
             {
-                Toast.makeText(context, " Data Already Exists", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                try {
+                AllMemberModel allMemberModel = ArrayListallMemberModel.get(i);
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(col_auto_id,allMemberModel.getAuto_id());
+                contentValues.put(col_city,allMemberModel.getCity());
+                contentValues.put(col_postal_code,allMemberModel.getZip_code());
+                contentValues.put(col_department,allMemberModel.getDepartment());
+                contentValues.put(col_geographical_code,allMemberModel.getGeographical_code());
+                contentValues.put(col_country,allMemberModel.getCountry());
+                contentValues.put(col_created_by,allMemberModel.getCreated_by());
+                contentValues.put(col_created_on,allMemberModel.getCreated_on());
 
-                }
-                catch (Exception e)
-                {
-
-                }
                 database.insert(table_LCDC_ZipCode,null,contentValues);
                 database.close();
-            }*/
+            }
+
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-
     }
 
     public ArrayList<AllMemberModel> GetAllCityListThroughZIPCodeFromSqliteDatabase(String ZIP_Code) {
@@ -2101,8 +2090,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean CheckIsInDBorNot(/*String auto_id*/) {
         //String selectQuery = "SELECT  * FROM " + table_LCDC_ZipCode + " where trim(auto_id) = ?" ;
-        SQLiteDatabase database = this.getReadableDatabase();
         try{
+            SQLiteDatabase database = this.getReadableDatabase();
             Cursor cursor = database.rawQuery("SELECT  * FROM " + table_LCDC_ZipCode /*+ " where trim(auto_id) = ?",new String[]{auto_id}*/,null);
 
             if (cursor.getCount() > 0) {
@@ -2123,12 +2112,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
             return true;
-
     }
 
     public boolean CheckActivityDbExistsOrNot() {
-        SQLiteDatabase database = this.getReadableDatabase();
+
         try{
+            SQLiteDatabase database = this.getReadableDatabase();
             Cursor cursor = database.rawQuery("SELECT  * FROM " + table_LCDC_activity_list /*+ " where trim(auto_id) = ?",new String[]{auto_id}*/,null);
 
             if (cursor.getCount() > 0) {
@@ -2152,8 +2141,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean CheckCivilityDbExistsOrNot() {
-        SQLiteDatabase database = this.getReadableDatabase();
+
         try{
+            SQLiteDatabase database = this.getReadableDatabase();
             Cursor cursor = database.rawQuery("SELECT  * FROM " + table_LCDC_civility_list /*+ " where trim(auto_id) = ?",new String[]{auto_id}*/,null);
 
             if (cursor.getCount() > 0) {
@@ -2521,7 +2511,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void InsertGiftVoucherFromServerToApp(AllVoucherModel allMemberModel) {
+    public boolean InsertGiftVoucherFromServerToApp(AllVoucherModel allMemberModel) {
 
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -2535,6 +2525,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(col_vd_barcode,allMemberModel.getVd_barcode());
         contentValues.put(col_voucher_exp_date,allMemberModel.getVoucher_exp_date());
         contentValues.put(col_voucher_stage,allMemberModel.getVoucher_stage());
+        contentValues.put(col_montent,allMemberModel.getMontent());
         contentValues.put(col_template_id,allMemberModel.getTemplate_id());
         contentValues.put(col_created_by,allMemberModel.getCreated_by());
         contentValues.put(col_created_on,allMemberModel.getCreated_on());
@@ -2552,6 +2543,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         database.insert(table_LCDC_gift_voucher_details,null,contentValues);
         database.close();
+        return true;
     }
 
     public ArrayList<AllMemberModel> GetInformationReturnArraylistGiftVoucherTable(String status){
@@ -2712,6 +2704,55 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                 allMemberModel.setVoucher_stage(allMember_Cursor.getString(allMember_Cursor.getColumnIndex("voucher_stage")));
                                 allMemberModel.setVd_barcode(allMember_Cursor.getString(allMember_Cursor.getColumnIndex("vd_barcode")));
                             }
+
+                            allMemberModelArraylist.add(allMemberModel);
+                        } while (allMember_Cursor.moveToNext());
+                    }
+                }
+                finally {
+
+                    if(allMember_Cursor!=null)
+                    {
+                        allMember_Cursor.close();
+                    }
+                }
+
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return allMemberModelArraylist;
+    }
+
+    public ArrayList<AllVoucherModel> GetReturnArraylistGiftVoucherDetailsTableInActivities(String CardNumber){
+        AllVoucherModel allMemberModel = null;
+        ArrayList<AllVoucherModel> allMemberModelArraylist= new ArrayList<AllVoucherModel>();
+        try{
+            Cursor allMember_Cursor = getReadableDatabase().rawQuery("SELECT * FROM " + table_LCDC_gift_voucher_details + " where trim(card_number) = ?", new String[]{CardNumber});
+
+            if (allMember_Cursor != null && allMember_Cursor.getCount() > 0) {
+                // looping through all rows and adding to list
+                try {
+                    if (allMember_Cursor.moveToFirst()) {
+                        do {
+                            allMemberModel = new AllVoucherModel();
+                            String GetDate = allMember_Cursor.getString(allMember_Cursor.getColumnIndex("voucher_exp_date")).replace("T"," ");
+
+                            if(GetDate.contains(" "))
+                            {
+                                GetDate = GetDate.substring(0,GetDate.indexOf(" "));
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MMM/yyyy");
+                                Date date = simpleDateFormat.parse(GetDate);
+                                String Date = simpleDateFormat1.format(date);
+                                allMemberModel.setVoucher_exp_date(Date);
+                            }
+                                allMemberModel.setVoucher_stage(allMember_Cursor.getString(allMember_Cursor.getColumnIndex("voucher_stage")));
+                                allMemberModel.setVoucher_type(allMember_Cursor.getString(allMember_Cursor.getColumnIndex("voucher_type")));
+                                allMemberModel.setMontent(allMember_Cursor.getDouble(allMember_Cursor.getColumnIndex("montent")));
+                                allMemberModel.setVd_barcode(allMember_Cursor.getString(allMember_Cursor.getColumnIndex("vd_barcode")));
+
 
                             allMemberModelArraylist.add(allMemberModel);
                         } while (allMember_Cursor.moveToNext());
@@ -2942,5 +2983,89 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return true;
     }
+
+    public AllVoucherModel getNumberOfVoucherSendCount(String cardNumber) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        AllVoucherModel allMemberModel = null;
+        Cursor cursor= db.rawQuery("SELECT COUNT (*) as voucher_id_auto FROM LCDC_gift_voucher_details  where trim(card_number) = ?" ,
+                new String[] {cardNumber});
+        try{
+            if(cursor!=null && cursor.getCount()>0){
+
+                if(cursor.moveToFirst())
+                {
+                    do{
+
+                        allMemberModel = new AllVoucherModel();
+                        allMemberModel.setTotal_count(cursor.getInt(cursor.getColumnIndex("voucher_id_auto")));
+                    }while (cursor.moveToNext());
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return allMemberModel;
+    }
+
+    public AllVoucherModel getNumberOfMontentUtiliseCount(String VoucherStage , String CardNumber) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        AllVoucherModel allMemberModel = null;
+        Cursor cursor= db.rawQuery("SELECT COUNT (*) as voucher_id_auto FROM LCDC_gift_voucher_details  where trim(voucher_stage) = ? AND trim(card_number)= ?" ,
+                new String[] {VoucherStage,CardNumber});
+        try{
+            if(cursor!=null && cursor.getCount()>0){
+
+                if(cursor.moveToFirst())
+                {
+                    do{
+
+                        allMemberModel = new AllVoucherModel();
+                        allMemberModel.setTotal_count(cursor.getInt(cursor.getColumnIndex("voucher_id_auto")));
+                    }while (cursor.moveToNext());
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return allMemberModel;
+    }
+
+    public AllVoucherModel getNumberOEncurseCount(String VoucherStage,String CardNumber) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        AllVoucherModel allMemberModel = null;
+        Cursor cursor= db.rawQuery("SELECT COUNT (*) as voucher_id_auto FROM LCDC_gift_voucher_details  where trim(voucher_stage) = ? AND trim(card_number)= ?" ,
+                new String[] {VoucherStage,CardNumber});
+        try{
+            if(cursor!=null && cursor.getCount()>0){
+
+                if(cursor.moveToFirst())
+                {
+                    do{
+
+                        allMemberModel = new AllVoucherModel();
+                        allMemberModel.setTotal_count(cursor.getInt(cursor.getColumnIndex("voucher_id_auto")));
+                    }while (cursor.moveToNext());
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return allMemberModel;
+    }
+
+
+
 
 }

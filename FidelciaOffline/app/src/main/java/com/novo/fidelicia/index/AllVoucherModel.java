@@ -1,11 +1,12 @@
 package com.novo.fidelicia.index;
 
 public class AllVoucherModel {
-    int member_id,voucher_id;
+    int member_id,voucher_id,total_count;
     String  cashier_id,card_number,voucher_date,voucher_type,vd_barcode,
             voucher_exp_date,voucher_stage,template_id,created_on,updated_on,sync_status
             ,update_status,created_by,updated_by,voucher_status;
     boolean cr_window,cr_server,up_window,up_server,dl_window,dl_server;
+    Double montent;
 
     public AllVoucherModel() {
     }
@@ -192,5 +193,21 @@ public class AllVoucherModel {
 
     public void setVoucher_status(String voucher_status) {
         this.voucher_status = voucher_status;
+    }
+
+    public Double getMontent() {
+        return montent;
+    }
+
+    public void setMontent(Double montent) {
+        this.montent = montent;
+    }
+
+    public int getTotal_count() {
+        return total_count;
+    }
+
+    public void setTotal_count(int total_count) {
+        this.total_count = total_count;
     }
 }

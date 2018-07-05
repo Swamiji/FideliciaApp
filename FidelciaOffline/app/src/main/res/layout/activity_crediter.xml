@@ -397,7 +397,7 @@
                     android:textColor="@color/darkBlue"
                     android:textStyle="bold"
                     android:textSize="@dimen/text_25"
-                    android:text="[Name]"
+                    android:text=""
                     android:id="@+id/name_credit"
                     android:maxLines="1"
                     />
@@ -407,7 +407,7 @@
                     android:textColor="@color/darkBlue"
                     android:textStyle="bold"
                     android:textSize="@dimen/text_25"
-                    android:text=" [LastName]"
+                    android:text=" "
                     android:id="@+id/lastName_credit"
                     android:maxLines="1"
                     android:layout_marginLeft="@dimen/layout_13"
@@ -485,7 +485,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/darkBlue"
                         android:textSize="@dimen/text_90"
-                        android:text=": [PHONE NUMBER]"
+                        android:text=""
                         android:id="@+id/phone_number_credit"
                         android:maxLines="1"
                         />
@@ -523,7 +523,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/darkBlue"
                         android:textSize="@dimen/text_90"
-                        android:text=": [ADDRESS]"
+                        android:text=""
                         android:id="@+id/address_credit"
                         android:maxLines="1"
                         />
@@ -554,7 +554,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/darkBlue"
                         android:textSize="@dimen/text_90"
-                        android:text="[ZIP CODE]"
+                        android:text=""
                         android:id="@+id/zip_code_credit"
                         android:maxLines="1"
                         />
@@ -563,7 +563,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/darkBlue"
                         android:textSize="@dimen/text_90"
-                        android:text="[CITY]"
+                        android:text=""
                         android:layout_marginLeft="10dp"
                         android:id="@+id/city_credit"
                         android:maxLines="1"
@@ -600,7 +600,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/darkBlue"
                         android:textSize="@dimen/text_90"
-                        android:text=": [EMAIL]"
+                        android:text=""
                         android:id="@+id/email_credit"
                         />
                 </LinearLayout>
@@ -647,7 +647,7 @@
                         android:layout_height="match_parent"
                         android:textColor="@color/light_green"
                         android:textSize="@dimen/text_25"
-                        android:text="[POINTNUMBER]"
+                        android:text=""
                         android:textStyle="bold"
                         android:id="@+id/no_of_points"
                         />

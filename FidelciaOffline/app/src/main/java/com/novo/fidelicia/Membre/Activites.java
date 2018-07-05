@@ -32,6 +32,7 @@ import com.novo.fidelicia.database.AllMemberModel;
 import com.novo.fidelicia.database.AllMemberModelByCardNumberOnly;
 import com.novo.fidelicia.database.AllMemberModelByMiBarCodeOnly;
 import com.novo.fidelicia.database.DatabaseHelper;
+import com.novo.fidelicia.index.AllVoucherModel;
 import com.novo.fidelicia.index.MySingleton;
 import com.novo.fidelicia.utils.Config;
 import com.novo.fidelicia.utils.InternetUtil;
@@ -62,10 +63,12 @@ TextView Chiffre_d_Affaires,Panier_Moyen,Nombre_de_visite,Crée_le,
         Bons_d_achat_envoyés,Montant_Utilisés,En_Cours,PreNom,Nom,PointsPts,Votre_Membre,Nombre_de_points;
 ArrayList<ActivityModel> ActivityArrayListPoints = new ArrayList<ActivityModel>();
 ArrayList<ActivityVoucherModel> ActivityArrayDePoints = new ArrayList<ActivityVoucherModel>();
+ArrayList<AllVoucherModel> allVoucherModelArrayList = new ArrayList<AllVoucherModel>();
 ListView ListPointsDate,ListNombreDePoints;
 DatabaseHelper databaseHelper = null;
 Double getCount;
 ArrayList<AllMemberModel>arrayListAllModel = null;
+int VoucherSentCount,MontentUtiliseCount,EnCourseCount;
     public Activites() {
         // Required empty public constructor
     }
@@ -138,6 +141,7 @@ ArrayList<AllMemberModel>arrayListAllModel = null;
            Log.e("CardNumberGetInSingleCashierPart",""+getCardnumber);
             ViewOneMemberActivitiesByCardNumberFromSqliteDatabase(getCardnumber);
             ViewAllCreditPointsDetailsList(getCardnumber);
+            ViewAllVoucherDetailsInActivities();
 
         }
     }
@@ -161,7 +165,6 @@ ArrayList<AllMemberModel>arrayListAllModel = null;
                         sharedPreference.saveCardNumber(getActivity(),getCardnumber);
 
                         Log.e("GetCardNumberInBarCode :",""+getCardnumber);
-
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -257,17 +260,21 @@ ArrayList<AllMemberModel>arrayListAllModel = null;
                         FloatConversionBons_d_achat_envoyés = df2.format(convertedFloat2);*/
                         Bons_d_achat_envoyés.setText(getBons_d_achat_envoyés);
 
-                        String FloatConversionMontant_Utilisés = getMontant_Utilisés;
+                        /*String FloatConversionMontant_Utilisés = getMontant_Utilisés;
                         Float convertedFloat3=Float.parseFloat(FloatConversionMontant_Utilisés);
                         DecimalFormat df3 = new DecimalFormat("0.00");
                         df3.setMaximumFractionDigits(2);
                         FloatConversionMontant_Utilisés = df3.format(convertedFloat3);
-                        Montant_Utilisés.setText(FloatConversionMontant_Utilisés+" €");
+                        Montant_Utilisés.setText(FloatConversionMontant_Utilisés+" €");*/
+
+                        Montant_Utilisés.setText(getMontant_Utilisés);
 
                         En_Cours.setText(getEn_Cours);
                         Nom.setText(getNom);
                         PreNom.setText(getPreNom+" ");
                         PointsPts.setText(getPoints+" pts");
+
+                        ActivityArrayListPoints.clear();
 
                         JSONArray JA = JO.getJSONArray("Member_Credits_List");
                         for (int i=0;i<JA.length();i++)
@@ -390,7 +397,7 @@ ArrayList<AllMemberModel>arrayListAllModel = null;
         getChiffre_d_Affaires = String.valueOf(allMemberModel.getNo_of_points());
 
         getCount = Double.valueOf(getChiffre_d_Affaires)/Double.valueOf(String.valueOf(allMemberModel1.getTotal_count()));
-        Log.e("GetNoOfCount",""+allMemberModel.getTotal_count());
+        Log.e("GetNoOfCount",""+allMemberModel1.getTotal_count());
         Log.e("getPanier_Moyen",""+getCount);
 
         getPanier_Moyen = String.valueOf(getCount);
@@ -459,6 +466,53 @@ ArrayList<AllMemberModel>arrayListAllModel = null;
             Log.e("GetAllInformationFromRewardTable",""+getLastVisitDate+"\n"+getCreditPoint);
         }
 
+    }
+
+    private void ViewAllVoucherDetailsInActivities()
+    {
+        allVoucherModelArrayList = new ArrayList<AllVoucherModel>();
+        databaseHelper = new DatabaseHelper(getActivity());
+        allVoucherModelArrayList = databaseHelper.GetReturnArraylistGiftVoucherDetailsTableInActivities(getCardnumber);
+        AllVoucherModel allVoucherModel1 = new AllVoucherModel();
+        AllVoucherModel allVoucherModel2 = new AllVoucherModel();
+        AllVoucherModel allVoucherModel3 = new AllVoucherModel();
+        allVoucherModel1 = databaseHelper.getNumberOfVoucherSendCount(getCardnumber);
+        allVoucherModel2 = databaseHelper.getNumberOfMontentUtiliseCount("UTILISÉ",getCardnumber);
+        allVoucherModel3 = databaseHelper.getNumberOEncurseCount("ENVOYÉ",getCardnumber);
+
+
+        VoucherSentCount = allVoucherModel1.getTotal_count();
+        MontentUtiliseCount = allVoucherModel2.getTotal_count();
+        EnCourseCount = allVoucherModel3.getTotal_count();
+
+        Bons_d_achat_envoyés.setText(String.valueOf(VoucherSentCount));
+        Montant_Utilisés.setText(String.valueOf(MontentUtiliseCount));
+        En_Cours.setText(String.valueOf(EnCourseCount));
+
+        ActivityArrayDePoints.clear();
+        for(int i=0;i<allVoucherModelArrayList.size();i++)
+        {
+            AllVoucherModel allVoucherModel = allVoucherModelArrayList.get(i);
+
+            gettype_de_bon = allVoucherModel.getVoucher_type();
+            getvd_barcode = allVoucherModel.getVd_barcode();
+            getdate_of_expiration = allVoucherModel.getVoucher_exp_date();
+            getmontant = String.valueOf(allVoucherModel.getMontent());
+            getetat = allVoucherModel.getVoucher_stage();
+
+            ActivityVoucherModel activityVoucherModel = new ActivityVoucherModel();
+            activityVoucherModel.setType_de_bon(gettype_de_bon);
+            activityVoucherModel.setDate_of_expiration(getdate_of_expiration);
+            activityVoucherModel.setMontant(getmontant);
+            activityVoucherModel.setEtat(getetat);
+            activityVoucherModel.setVd_barcode(getvd_barcode);
+            ActivityArrayDePoints.add(activityVoucherModel);
+
+            ActivityVoucherAdapter activityVoucherAdapter = new ActivityVoucherAdapter(getActivity(),ActivityArrayDePoints);
+            ListNombreDePoints.setAdapter(activityVoucherAdapter);
+            activityVoucherAdapter.notifyDataSetChanged();
+
+        }
     }
 
 
